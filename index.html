@@ -167,9 +167,17 @@
 
   <!-- Contenuto riservato all'utente -->
   <div id="content" class="hidden">
-    <!-- Inserisci qui le risorse specifiche dell'utente -->
-    <h2 id="readme-title"></h2>
-    <div id="readme-content"></div>
+    <!-- Div specifico per l'utente 1 -->
+    <div id="user1-content" class="hidden">
+      <!-- Inserisci qui le risorse specifiche dell'utente 1 -->
+      <h2>Risorse per Utente 1</h2>
+      <p>ciao</p>
+    </div>
+    <!-- Div specifico per l'utente 2 -->
+    <div id="user2-content" class="hidden">
+      <!-- Inserisci qui le risorse specifiche dell'utente 2 -->
+      <h2>Risorse per Utente 2</h2>
+    </div>
   </div>
 
   <!-- Script per la visualizzazione del contenuto del file Markdown -->
@@ -199,6 +207,9 @@
         document.getElementById("user-info").classList.remove("hidden");
         document.getElementById("user-photo").src = user.photo;
         document.getElementById("user-username").textContent = user.username;
+
+        // Mostra il div specifico dell'utente corrente
+        document.getElementById(user.username + "-content").classList.remove("hidden");
 
         // Carica il contenuto del file readme dell'utente
         var xhttp = new XMLHttpRequest();
