@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pagina Personale</title>
   <style>
-    /* Stili CSS */
     header img {
       max-width: 100px;
       height: auto;
@@ -123,10 +122,22 @@
     .hidden {
       display: none;
     }
+
+    /* Aggiunta per visualizzare l'immagine e il nome dell'utente */
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-info img {
+      max-width: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
-  <!-- Header con immagine e link -->
+  <!-- Header -->
   <header>
     <div class="container">
       <h1><img src="https://github.com/GitJuneCode/Gabriel-Jones/blob/SSA/x/archiviati/Logo-ufficiale.png?raw=true" alt="Logo"> Benvenuto sul Sito di Gabriel Jones</h1>
@@ -137,6 +148,11 @@
           <li><a href="dev/index.html">Dev-Page</a></li>
         </ul>
       </nav>
+      <!-- Div per visualizzare l'immagine e il nome dell'utente -->
+      <div id="user-info" class="hidden user-info">
+        <img id="user-photo" src="" alt="User Photo">
+        <span id="user-username"></span>
+      </div>
     </div>
   </header>
 
@@ -160,21 +176,19 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <script>
-    var user; // Definizione globale della variabile user
-
     function login() {
       var username = document.getElementById("username").value;
       var password = document.getElementById("password").value;
 
       // Definizione degli utenti e delle loro risorse
       var users = [
-        { username: "user1", password: "password1", folder: "user/user1", photo: "user/user1/photo.png", readme: "https://gabbystudios.github.io/usr/user1/readme1.md" },
-        { username: "user2", password: "password2", folder: "user/user2", photo: "user/user2/photo.png", readme: "https://gabbystudios.github.io/usr/user2/readme2.md" }
+        { username: "user1", password: "password1", folder: "user/user1", photo: "user/user1/photo.png", readme: "user/user1/readme.md" },
+        { username: "user2", password: "password2", folder: "user/user2", photo: "user/user2/photo.png", readme: "user/user2/readme.md" }
         // Aggiungi altri utenti e risorse se necessario
       ];
 
       // Verifica le credenziali dell'utente
-      user = users.find(function(user) {
+      var user = users.find(function(user) {
         return user.username === username && user.password === password;
       });
 
@@ -182,28 +196,25 @@
         // Mostra il contenuto e imposta la foto dell'utente nell'header
         document.getElementById("login-form").classList.add("hidden");
         document.getElementById("content").classList.remove("hidden");
+        document.getElementById("user-info").classList.remove("hidden");
         document.getElementById("user-photo").src = user.photo;
+        document.getElementById("user-username").textContent = user.username;
 
         // Carica il contenuto del file readme dell'utente
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
-          if (this.readyState == 4) {
-            if (this.status == 200) {
-              document.getElementById("readme-title").textContent = "Benvenuto, " + user.username + "!";
-              document.getElementById("readme-content").innerHTML = marked(this.responseText);
-            } else {
-              document.getElementById("readme-title").textContent = "Errore durante il recupero del file readme";
-              document.getElementById("readme-content").textContent = "Si è verificato un errore durante il recupero del file readme.";
-            }
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("readme-title").textContent = "Benvenuto, " + user.username + "!";
+            document.getElementById("readme-content").innerHTML = marked(this.responseText);
           }
         };
-
         xhttp.open("GET", user.readme, true);
         xhttp.send();
       } else {
         // Messaggio di errore per credenziali non valide
         document.getElementById("error-message").innerText = "Nome utente o password non validi";
       }
-    }  </script>
+    }
+  </script>
 </body>
 </html>
